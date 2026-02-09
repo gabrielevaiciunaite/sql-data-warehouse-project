@@ -1,3 +1,0 @@
-git rm scripts/placeholder
-git commit -m "Delete placeholder file"
-git push origin main
