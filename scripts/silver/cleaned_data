@@ -63,7 +63,7 @@ INSERT INTO silver.crm_prd_info (
 			CAST(
 				LEAD(prd_start_dt::date) OVER (PARTITION BY prd_key ORDER BY prd_start_dt::date) - 1 
 				AS DATE
-			) AS prd_end_dt -- Calculate end date as one day before the next start date
+			) AS prd_end_dt
 		FROM bronze.crm_prd_info;
 
 --crm_sales_details
@@ -102,12 +102,12 @@ SELECT
 				WHEN sls_sales IS NULL OR sls_sales <= 0 OR sls_sales != sls_quantity * ABS(sls_price) 
 					THEN sls_quantity * ABS(sls_price)
 				ELSE sls_sales
-			END AS sls_sales, -- Recalculate sales if original value is missing or incorrect
+			END AS sls_sales, 
 			sls_quantity,
 			CASE 
 				WHEN sls_price IS NULL OR sls_price <= 0 
 					THEN sls_sales / NULLIF(sls_quantity, 0)
-				ELSE sls_price  -- Derive price if original value is invalid
+				ELSE sls_price 
 			END AS sls_price
 		FROM bronze.crm_sales_details;
 
